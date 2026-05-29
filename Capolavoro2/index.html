@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Mio Percorso — Calcio & Crescita</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde: #1a7a3c;
+    --verde-chiaro: #2db55d;
+    --bianco: #f5f5f0;
+    --nero: #0d0d0d;
+    --grigio: #888;
+    --accent: #e8ff47;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--nero);
+    color: var(--bianco);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 4rem 6vw 5rem;
+    position: relative;
+    background: linear-gradient(160deg, #0d2b18 0%, #0d0d0d 60%);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "⚽";
+    position: absolute;
+    font-size: 42vw;
+    right: -8vw;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.04;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .hero-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--verde-chiaro);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    color: var(--bianco);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #aaa;
+    max-width: 500px;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    right: 6vw;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grigio);
+    writing-mode: vertical-rl;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  /* SEZIONI */
+  section {
+    padding: 6rem 6vw;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--verde-chiaro);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    color: var(--bianco);
+    margin-bottom: 2rem;
+  }
+
+  p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: #ccc;
+    max-width: 660px;
+    margin-bottom: 1.2rem;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-top: 3rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--verde-chiaro), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.45rem;
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .timeline-year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--verde-chiaro);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-text {
+    font-size: 1rem;
+    font-weight: 300;
+    color: #bbb;
+    max-width: 560px;
+  }
+
+  /* FOTO GRID */
+  .foto-section {
+    background: #111;
+  }
+
+  .foto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .foto-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    aspect-ratio: 4/5;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .foto-card:hover {
+    transform: scale(1.02);
+  }
+
+  .foto-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity 0.3s;
+  }
+
+  .foto-card:hover img {
+    opacity: 1;
+  }
+
+  .foto-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: #444;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .foto-placeholder span {
+    font-size: 2.5rem;
+  }
+
+  .foto-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 1rem 1rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--bianco);
+    letter-spacing: 0.05em;
+  }
+
+  /* VALORI */
+  .valori-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: #222;
+    margin-top: 3rem;
+    border: 1px solid #222;
+  }
+
+  .valore-card {
+    background: var(--nero);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+  }
+
+  .valore-card:hover {
+    background: #0d2b18;
+  }
+
+  .valore-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .valore-titolo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .valore-desc {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* CITAZIONE */
+  .quote-section {
+    background: var(--verde);
+    padding: 6rem 6vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '"';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30vw;
+    position: absolute;
+    left: -2vw;
+    top: -5vw;
+    color: rgba(0,0,0,0.15);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.1;
+    color: var(--bianco);
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-author {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* RIFLESSIONE */
+  .riflessione-section {
+    background: #0a0a0a;
+  }
+
+  .riflessione-box {
+    border-left: 3px solid var(--verde-chiaro);
+    padding-left: 2rem;
+    margin-top: 3rem;
+    max-width: 700px;
+  }
+
+  .riflessione-box p {
+    color: #bbb;
+    margin-bottom: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 6vw; 
+    border-top: 1px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: #555;
+    margin: 0;
+    max-width: none;
+  }
+
+  .footer-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--verde-chiaro);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMAZIONI */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ISTRUZIONE PER FOTO */
+  .foto-istruzioni {
+    background: #161616;
+    border: 1px dashed #333;
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    margin-top: 2rem;
+    max-width: 600px;
+  }
+
+  .foto-istruzioni p {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .foto-istruzioni code {
+    background: #222;
+    color: var(--accent);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Capolavoro — Esame di Stato 2025/2026</div>
+  <h1>Il mio<span>percorso</span></h1>
+  <p class="hero-sub">Calcio, crescita e la strada verso il futuro. Una storia che inizia a 4 anni e non finisce qui.</p>
+  <div class="scroll-hint">Scorri per leggere</div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <div class="section-label">Le tappe</div>
+  <h2>Una vita con il pallone</h2>
+  <p>Dal primo campo ai giorni di oggi, il calcio mi ha formato come persona prima ancora che come giocatore.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-year">4 – 12 anni — Mariner</div>
+      <p class="timeline-text">Il primo pallone, il primo campo, la prima maglia. Dall'età di 4 anni fino ai 12 ho mosso i miei primi passi nella Mariner, dove è nata la mia passione vera per questo sport.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">12 – 17 anni — Porto d'Ascoli</div>
+      <p class="timeline-text">Cinque anni importanti al Porto d'Ascoli nel settore giovanile. Anni di crescita intensa: allenamenti quotidiani, partite difficili, vittorie sudate. Ho imparato il rispetto dei compagni, la disciplina e cosa significa far parte di un gruppo vero.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">17 anni — Sambenedettese, Serie D</div>
+      <p class="timeline-text">Il salto più importante: la Sambenedettese in Serie D. Un livello diverso, più esigente, dove ho dovuto dimostrare ogni giorno di meritarmi il campo. Ho incontrato chi non credeva in me — ho risposto con il lavoro e con i fatti.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Eccellenza & Promozione</div>
+      <p class="timeline-text">Il percorso è continuato tra squadre di Eccellenza e Promozione. Ogni cambio di maglia è stata una nuova sfida, un nuovo spogliatoio, nuove persone con cui costruire qualcosa. Ho imparato ad adattarmi, a farmi valere e a portare rispetto ovunque andassi.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-year">Oggi</div>
+      <p class="timeline-text">Tutto ciò che il calcio mi ha insegnato — determinazione, rispetto, capacità di rialzarsi — lo porto con me anche fuori dal campo, nella scuola e nelle scelte che sto costruendo per il futuro.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOTO -->
+<section class="foto-section">
+  <div class="section-label">La mia storia in immagini</div>
+  <h2>I miei momenti</h2>
+  <p>Le foto che raccontano il percorso — dai primi calci al pallone fino ad oggi.</p>
+
+  <div class="foto-grid">
+
+    <div class="foto-card" id="foto1">
+      <img src="foto3.jpg.jpg" >
+      <div class="foto-label">I primi anni — da piccolo</div>
+    </div>
+
+    <div class="foto-card" id="foto2">
+     <img src="foto1.jpg.jpg">
+      <div class="foto-label">In campo con la squadra</div>
+    </div>
+
+    <div class="foto-card" id="foto3">
+     <img src="foto2.jpg.jpg">
+      <div class="foto-label">Un momento speciale</div>
+    </div>
+
+  </div>
+
+  
+</section>
+
+<!-- VALORI -->
+<section>
+  <div class="section-label reveal">Cosa ho imparato</div>
+  <h2 class="reveal">I valori che porto con me</h2>
+
+  <div class="valori-grid">
+    <div class="valore-card reveal">
+      <span class="valore-icon">🛡️</span>
+      <div class="valore-titolo">Rispetto</div>
+      <p class="valore-desc">Verso me stesso, verso i compagni, verso chi la pensava diversamente. Sul campo e nella vita.</p>
+    </div>
+    <div class="valore-card reveal">
+      <span class="valore-icon">💪</span>
+      <div class="valore-titolo">Determinazione</div>
+      <p class="valore-desc">Non mi sono mai tirato indietro davanti alle difficoltà. La fatica non è un ostacolo — è il percorso.</p>
+    </div>
+    <div class="valore-card reveal">
+      <span class="valore-icon">🪞</span>
+      <div class="valore-titolo">Consapevolezza</div>
+      <p class="valore-desc">Ho imparato a riconoscere i miei limiti e a lavorarci sopra, senza nasconderli.</p>
+    </div>
+    <div class="valore-card reveal">
+      <span class="valore-icon">🌱</span>
+      <div class="valore-titolo">Crescita</div>
+      <p class="valore-desc">Ogni caduta è stata un'occasione per rialzarsi più forte, dentro e fuori dal campo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CITAZIONE -->
+<section class="quote-section">
+  <div class="quote-text">La fatica non è un ostacolo. È il percorso stesso.</div>
+  <div class="quote-author">— La lezione più importante che ho imparato</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Capolavoro — Esame di Stato · Anno scolastico 2025/2026  Devid Bonifazi</p>
+  <div class="footer-badge">⚽ Sempre avanti</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
